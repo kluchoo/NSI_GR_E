@@ -1,0 +1,97 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Cleanup",
+            "command": "rm -r __pycache__ htmlcov .coverage .pytest_cache 2>/dev/null || true",
+            "type": "shell",
+            "args": [],
+            "presentation": {
+                "reveal": "never"
+            },
+            "group": "build"
+        },
+        {
+            "label": "Run Tests",
+            "command": "uv run pytest",
+            "type": "shell",
+            "args": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "clear": true,
+            },
+            "group": {
+                "kind": "test",
+            }
+        },
+        {
+            "label": "Run Main",
+            "command": "uv run main.py",
+            "type": "shell",
+            "args": [],
+            "presentation": {
+                "reveal": "always",
+                "clear": true,
+                "focus": true,
+            },
+            "problemMatcher": "$python",
+            "group": {
+                "kind": "build",
+            }
+        },
+        {
+            "label": "Build docker image",
+            "type": "shell",
+            "command": "docker build -t nsi-e ${workspaceFolder}",
+            "problemMatcher": [],
+            "runOptions": {
+                "instanceLimit": 1,
+                "instancePolicy": "warn",
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": false,
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "group": "build",
+        },
+        {
+            "label": "run docker container",
+            "type": "shell",
+            "command": "docker run --rm --name NSI nsi-e",
+            "problemMatcher": [],
+            "runOptions": {
+                "instanceLimit": 1,
+                "instancePolicy": "terminateNewest",
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "dependsOn": "Build docker image",
+            "group": "build",
+        },
+        {
+            "label": "run tests in docker container",
+            "type": "shell",
+            "command": "docker run --rm --tty --name NSI-tests nsi-e uv run pytest",
+            "problemMatcher": [],
+            "runOptions": {
+                "instanceLimit": 1,
+                "instancePolicy": "terminateNewest",
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "dependsOn": "Build docker image",
+            "group": "test",
+        },
+    ]
+}
