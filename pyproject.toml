@@ -16,7 +16,7 @@ pythonpath = ["."]
 python_files = ["test_*.py", "*.test.py"]
 python_functions = ["test_*"]
 addopts = [
-    "--cov",
+    "--cov=API",
     "--cov-branch",
     "--cov-report=term-missing",
     "--cov-report=html",
@@ -25,10 +25,11 @@ addopts = [
 
 [tool.coverage.run]
 branch = true
-source = ["."]
+source = ["API"]
 relative_files = true
 omit = [
     "tests/*",
+    "main.py",
     "*/__pycache__/*",
 ]
 
