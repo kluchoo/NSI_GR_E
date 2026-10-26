@@ -36,6 +36,24 @@ uv sync
 uv run pytest
 ```
 
+## Testy mutacyjne (lab 3, pytest-gremlins)
+
+Wymaga grupy dev (`pytest-gremlins` jest w `pyproject.toml`):
+
+```bash
+uv sync
+uv run pytest --gremlins --gremlin-targets=API.py tests/test_bank.py -o addopts=
+```
+
+Raport HTML (folder `gremlins-report/`):
+
+```bash
+uv run pytest --gremlins --gremlin-targets=API.py tests/test_bank.py -o addopts= \
+  --gremlin-report=html --gremlins-html-dir=gremlins-report
+```
+
+Opcja `-o addopts=` wyłącza domyślne `--cov` z `pyproject.toml`, żeby mutacje nie mieszały się z coverage.
+
 ## Docker
 
 Obraz uruchamia ten sam cykl jak lokalnie:

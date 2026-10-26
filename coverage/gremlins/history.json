@@ -1,0 +1,60 @@
+[
+  {
+    "timestamp": "2026-10-26T01:19:44.176119+00:00",
+    "score": 98.57,
+    "by_file": {
+      "/home/stygus/NSI_GR_E/API.py": 98.57
+    },
+    "by_operator": {
+      "boolean": {
+        "total": 10,
+        "survived": 0
+      },
+      "comparison": {
+        "total": 33,
+        "survived": 0
+      },
+      "return": {
+        "total": 13,
+        "survived": 1
+      },
+      "boundary": {
+        "total": 10,
+        "survived": 0
+      },
+      "arithmetic": {
+        "total": 4,
+        "survived": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-10-26T01:20:45.537222+00:00",
+    "score": 98.57,
+    "by_file": {
+      "/home/stygus/NSI_GR_E/API.py": 98.57
+    },
+    "by_operator": {
+      "boolean": {
+        "total": 10,
+        "survived": 0
+      },
+      "comparison": {
+        "total": 33,
+        "survived": 0
+      },
+      "return": {
+        "total": 13,
+        "survived": 1
+      },
+      "boundary": {
+        "total": 10,
+        "survived": 0
+      },
+      "arithmetic": {
+        "total": 4,
+        "survived": 0
+      }
+    }
+  }
+]

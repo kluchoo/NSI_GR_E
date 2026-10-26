@@ -38,3 +38,12 @@ show_missing = true
 skip_covered = true
 fail_under = 80
 precision = 1
+
+[dependency-groups]
+dev = [
+    "pytest-gremlins>=1.12.2",
+]
+
+[tool.pytest-gremlins]
+paths = ["API.py"]
+report = ["console", "html"]

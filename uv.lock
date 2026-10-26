@@ -128,11 +128,19 @@ dependencies = [
     { name = "pytest-cov" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest-gremlins" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest-gremlins", specifier = ">=1.12.2" }]
 
 [[package]]
 name = "packaging"
@@ -189,4 +197,17 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/51/a849f96e117386044471c8ec2bd6cfebacda285da9525c9106aeb28da671/pytest_cov-7.1.0.tar.gz", hash = "sha256:30674f2b5f6351aa09702a9c8c364f6a01c27aae0c1366ae8016160d1efc56b2", size = 55592, upload-time = "2026-03-21T20:11:16.284Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9d/7a/d968e294073affff457b041c2be9868a40c1c71f4a35fcc1e45e5493067b/pytest_cov-7.1.0-py3-none-any.whl", hash = "sha256:a0461110b7865f9a271aa1b51e516c9a95de9d696734a2f71e3e78f46e1d4678", size = 22876, upload-time = "2026-03-21T20:11:14.438Z" },
+]
+
+[[package]]
+name = "pytest-gremlins"
+version = "1.12.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "coverage" },
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/66/54/01fee16e8de7a0534e79bfc20510f44e26581fbcd40bd099ff461ce1d374/pytest_gremlins-1.12.2.tar.gz", hash = "sha256:28ac7f9748ab95452c157c1d06b5a3958b3b7c34e642f75d53bea144b96899e6", size = 4295970, upload-time = "2026-10-19T04:17:10.381Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/65/915f8c0613f18aa91c0626629ed89979cf70d3f1462fc751d5fbef502919/pytest_gremlins-1.12.2-py3-none-any.whl", hash = "sha256:f0f75eeaa1713143de01ea516fff683bda10e24bebfb5d609d9910e02e3b2f48", size = 185299, upload-time = "2026-10-19T04:17:08.271Z" },
 ]

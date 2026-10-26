@@ -110,6 +110,25 @@ def test_przelew_limit_systemowy(bank):
         bank.przelew(NUM_A, NUM_B, Decimal("1000001"))
 
 
+def test_przelew_kwota_jedna(bank):
+    saldo = bank.przelew(NUM_A, NUM_B, 1)
+    assert saldo == Decimal("9999")
+    assert bank.konta[NUM_B].saldo == Decimal("1")
+
+
+def test_przelew_cale_saldo(bank):
+    saldo = bank.przelew(NUM_A, NUM_B, 10_000)
+    assert saldo == Decimal("0")
+    assert bank.konta[NUM_B].saldo == Decimal("10000")
+
+
+def test_przelew_dokladnie_limit_milion(bank):
+    bank.wplac(NUM_A, 2_000_000)
+    saldo = bank.przelew(NUM_A, NUM_B, Decimal("1000000"))
+    assert saldo == Decimal("1010000")
+    assert bank.konta[NUM_B].saldo == Decimal("1000000")
+
+
 def test_przelew_konto_zrodlowe_nie_istnieje(bank):
     with pytest.raises(KontoNieIstnieje):
         bank.przelew(NUM_BRAK, NUM_B, 10)
@@ -150,8 +169,8 @@ def test_suma_dzisiejszych_wyplat(bank):
 
 def test_nalicz_odsetki(bank):
     saldo = bank.nalicz_odsetki(NUM_A, 12, 1)
-    assert saldo > Decimal("10000")
-    assert bank.konta[NUM_A].historia[-1][1] == "odsetki"
+    assert saldo == Decimal("10100")
+    assert bank.konta[NUM_A].historia[-1] == (date.today(), "odsetki", Decimal("100.00"))
 
 
 def test_historia_w_okresie(bank):
@@ -171,9 +190,9 @@ def test_wyciag_miesieczny(bank):
     # typ poza wplata/wyplata → gałąź fałsz elif (183->179)
     bank.konta[NUM_A].dodaj_wpis("przelew_zewnetrzny", Decimal("1"), dzis)
     wyciag = bank.wyciag_miesieczny(NUM_A, dzis.year, dzis.month)
-    assert wyciag["wplaty"] >= Decimal("100")
-    assert wyciag["wyplaty"] >= Decimal("50")
-    assert "saldo_koncowe" in wyciag
+    assert wyciag["wplaty"] == Decimal("100")
+    assert wyciag["wyplaty"] == Decimal("50")
+    assert wyciag["saldo_koncowe"] == bank.konta[NUM_A].saldo
 
 
 def test_api_main_block(capsys):
@@ -212,6 +231,37 @@ def test_przelew_zewnetrzny_brak_srodkow(bank):
         bank.przelew_zewnetrzny(NUM_A, "PL123", 50_000, procesor=ZewnetrznyProcesor(0))
 
 
+def test_przelew_zewnetrzny_kwota_jedna(bank):
+    class StubProcesor:
+        def wyslij_przelew(self, numer, kwota):
+            return {"status": "zaksiegowano", "numer_referencyjny": "REF1"}
+
+    wynik = bank.przelew_zewnetrzny(NUM_A, "PL123", 1, procesor=StubProcesor())
+    assert wynik["status"] == "zaksiegowano"
+    assert bank.konta[NUM_A].saldo == Decimal("9999")
+
+
+def test_przelew_zewnetrzny_cale_saldo(bank):
+    class StubProcesor:
+        def wyslij_przelew(self, numer, kwota):
+            return {"status": "zaksiegowano", "numer_referencyjny": "REFALL"}
+
+    wynik = bank.przelew_zewnetrzny(NUM_A, "PL123", 10_000, procesor=StubProcesor())
+    assert wynik["numer_referencyjny"] == "REFALL"
+    assert bank.konta[NUM_A].saldo == Decimal("0")
+
+
+def test_przelew_zewnetrzny_bez_procesora(bank, monkeypatch):
+    class StubProcesor:
+        def wyslij_przelew(self, numer, kwota):
+            return {"status": "zaksiegowano", "numer_referencyjny": "REF-DEF"}
+
+    monkeypatch.setattr("API.ZewnetrznyProcesor", lambda *args, **kwargs: StubProcesor())
+    wynik = bank.przelew_zewnetrzny(NUM_A, "PL999", 30)
+    assert wynik["status"] == "zaksiegowano"
+    assert bank.konta[NUM_A].saldo == Decimal("9970")
+
+
 def test_zewnetrzny_procesor_sukces_i_awaria():
     ok = ZewnetrznyProcesor(prawdopodobienstwo_awarii=0.0, opoznienie_s=0.001)
     assert ok.wyslij_przelew("X", 1)["status"] == "zaksiegowano"
@@ -223,3 +273,10 @@ def test_zewnetrzny_procesor_sukces_i_awaria():
     fail = ZewnetrznyProcesor(prawdopodobienstwo_awarii=1.0, generator=GenFail())
     with pytest.raises(ProcesorNiedostepny):
         fail.wyslij_przelew("X", 1)
+
+    class GenOnThreshold:
+        def random(self):
+            return 0.3
+
+    edge = ZewnetrznyProcesor(prawdopodobienstwo_awarii=0.3, generator=GenOnThreshold())
+    assert edge.wyslij_przelew("X", 1)["status"] == "zaksiegowano"
