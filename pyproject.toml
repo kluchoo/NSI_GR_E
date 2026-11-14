@@ -15,6 +15,9 @@ testpaths = ["tests"]
 pythonpath = ["."]
 python_files = ["test_*.py", "*.test.py"]
 python_functions = ["test_*"]
+markers = [
+    "niefunkcjonalne: testy obciążeniowe i współbieżności (lab 5)",
+]
 addopts = [
     "--cov=API",
     "--cov-branch",

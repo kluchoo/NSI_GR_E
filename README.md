@@ -54,6 +54,15 @@ uv run pytest --gremlins --gremlin-targets=API.py tests/test_bank.py -o addopts=
 
 Opcja `-o addopts=` wyłącza domyślne `--cov` z `pyproject.toml`, żeby mutacje nie mieszały się z coverage.
 
+## Testy niefunkcjonalne (lab 5 — obciążenie, współbieżność)
+
+Szczegóły raportu: [`docs/lab5_raport.md`](docs/lab5_raport.md).
+
+```bash
+uv run pytest tests/test_niefunkcjonalne.py -o addopts= -s
+uv run python scripts/lab5_benchmark.py
+```
+
 ## Docker
 
 Obraz uruchamia ten sam cykl jak lokalnie:
