@@ -1,0 +1,12 @@
+API.py:36:80: E501 line too long (88 > 79 characters)
+API.py:47:80: E501 line too long (84 > 79 characters)
+API.py:48:80: E501 line too long (97 > 79 characters)
+API.py:77:80: E501 line too long (81 > 79 characters)
+API.py:87:30: F541 f-string is missing placeholders
+API.py:109:80: E501 line too long (82 > 79 characters)
+API.py:144:40: F541 f-string is missing placeholders
+API.py:160:80: E501 line too long (97 > 79 characters)
+API.py:162:80: E501 line too long (104 > 79 characters)
+API.py:185:80: E501 line too long (83 > 79 characters)
+API.py:187:80: E501 line too long (93 > 79 characters)
+API.py:216:39: W292 no newline at end of file

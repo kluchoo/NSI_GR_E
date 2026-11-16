@@ -63,6 +63,15 @@ uv run pytest tests/test_niefunkcjonalne.py -o addopts= -s
 uv run python scripts/lab5_benchmark.py
 ```
 
+## Analiza statyczna (lab 6 — radon, pylint, flake8)
+
+Raport: [`docs/lab6_raport.md`](docs/lab6_raport.md).
+
+```bash
+uv sync --group dev
+bash scripts/lab6_static.sh API.py
+```
+
 ## Docker
 
 Obraz uruchamia ten sam cykl jak lokalnie:

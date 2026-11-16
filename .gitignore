@@ -229,3 +229,8 @@ pyrightconfig.json
 output.txt
 awarie.jsonl
 raporty/
+
+# Lab 6 local static-analysis vendor (optional)
+.tools_vendor/
+.tools_bin/
+.pylint_cache/
